@@ -7,11 +7,13 @@ import subprocess
 import shlex
 import pprint
 
+SYNCTEX_BIN='/usr/bin/synctex'
+
 def get_latex_position(page_no, page_size, rect, synctex_pdf):
     x=rect.x1+(rect.x2-rect.x1)/2
     y=rect.y1+(rect.y2-rect.y1)/2
-    command='/usr/bin/synctex edit -o %d:%d:%d:%s'%(page_no,x,page_size[1]-y, synctex_pdf)
-    args=shlex.split(command)
+    command = SYNCTEX_BIN+' edit -o %d:%d:%d:%s'%(page_no,x,page_size[1]-y, synctex_pdf)
+    args = shlex.split(command)
     lines = subprocess.check_output(args=args).split('\n')
     data={}
     for line in lines:
@@ -48,7 +50,7 @@ def get_annotations(annotated_pdf, synctex_pdf):
 
 def main():
   if len(sys.argv)!=3:
-      print "python latexannotator.py annotated.pdf synctexed.pdf "
+      print "python notes2latex.py annotated.pdf synctexed.pdf "
       exit(1)
   else:
       annotated_pdf = sys.argv[1]
